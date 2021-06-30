@@ -54,6 +54,18 @@ router.post("/", async (req, res, next) => {
 //get single authors
 router.get("/:id", async (req, res, next) => {
   try {
+    const fileAsBuffer = fs.readFileSync(authorsFilePath);
+    const fileAsString = fileAsBuffer.toString();
+    const fileAsJSONArray = JSON.parse(fileAsString);
+    const author = fileAsJSONArray.find(
+      (author) => author.id === req.params.id
+    );
+    if (!author) {
+      res
+        .status(404)
+        .send({ message: `Author with ${req.params.id} is not found` });
+    }
+    res.send(author);
   } catch (error) {
     res.send(500).send({ message: error.message });
   }
