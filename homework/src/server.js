@@ -1,8 +1,7 @@
 import express from "express";
-
 import cors from "cors";
-
 import listEndpoints from "express-list-endpoints";
+import authorsRouter from "./authors/index.js";
 
 const server = express();
 const PORT = 3001;
@@ -11,7 +10,9 @@ server.use(cors());
 
 server.use(express.json());
 
-console.log(listEndpoints(server));
+server.use("/authors", authorsRouter);
+
+console.table(listEndpoints(server));
 
 server.listen(PORT, () => console.log("👍 Server is running on port :", PORT));
 
