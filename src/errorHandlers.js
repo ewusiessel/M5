@@ -1,4 +1,4 @@
-export const notFound = (err, req, res, next) => {
+export const notFound = (err, req, res) => {
   if (err && err.status === 400) {
     res
       .status(400)
@@ -7,7 +7,7 @@ export const notFound = (err, req, res, next) => {
   next();
 };
 
-export const forbidden = (err, req, res, next) => {
+export const forbidden = (err, req, res) => {
   if (err && err.status === 403) {
     res.status(403).send({ message: err.message || "Forbidden!" });
   }
