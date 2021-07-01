@@ -1,78 +1,29 @@
-Strive Blog API
+Strive Blog API - 3
 
 You are in charge of creating a set of WebAPIs for the Strive Blog application.
 
 Here you can find the Frontend already created
 
-In this second "step" the application should enable the creation, editing, deletion, listing of blog posts
-
-Blog posts should contain following information:
-
-{
-"\_id": "SERVER GENERATED ID",
-"category": "ARTICLE CATEGORY",
-"title": "ARTICLE TITLE",
-"cover":"ARTICLE COVER (IMAGE LINK)",
-"readTime": {
-"value": 2,
-"unit": "minute"
-},
-"author": {
-"name": "AUTHOR AVATAR NAME",
-"avatar":"AUTHOR AVATAR LINK"
-},
-"content": "HTML",
-"createdAt": "NEW DATE"
-}
+In this third "step" the application should enable file uploading and comments crud
 
 Backend
+Comments are going to be embedded in the corresponding blog post, so add a comments array on every post (empty at the beginning). They should contain just author name and text
 
 The backend should include the following routes:
 
-GET /blogPosts => returns the list of blogposts
-GET /blogPosts /123 => returns a single blogpost
-POST /blogPosts => create a new blogpost
-PUT /blogPosts /123 => edit the blogpost with the given id
-DELETE /blogPosts /123 => delete the blogpost with the given id
+POST /authors/:id/uploadAvatar, uploads a picture (save as idOfTheAuthor.jpg in the public/img/authors folder) for the author specified by the id. Store the newly created URL into the corresponding author in authors.json
+POST /blogPosts/:id/uploadCover, uploads a picture (save as idOfTheBlogPost.jpg in the public/img/blogPosts folder) for the blog post specified by the id. Store the newly created URL into the corresponding post in blogPosts.json
+GET /blogPosts/:id/comments, get all the comments for a specific post
+POST /blogPosts/:id/comments, add a new comment to the specific post
 
-The persistence must be granted via file system (es.: Json file with a list of blog posts inside)
+The persistence must be granted via file system
 
-Sidenote: remember to install the cors package with 'npm i cors', to import it and to use it with 'server.use(cors())'
+Configure Express to use the public folder to serve static files
 
-⚠️ Bodies, params and queries must be validated with express-validator middleware
-
-Frontend
-
-Post article from new article form
-Fetch & List your articles at home page
+FRONTEND
+The user should be able to upload a picture as an avatar
+The user should be able to upload a picture as a blog post cover
 
 Extra Features
-GET /authors/:id/blogPosts/ => get all the posts for an author with a given ID
-GET /blogPosts?title=whatever => filter the blogposts and extract the only that match the condition (es.: title contains "whatever")
-Add search feature to frontend
-
-Authors should have following information:
-
-name
-surname
-ID (Unique and server generated)
-email
-date of birth
-avatar (e.g. https://ui-avatars.com/api/?name=John+Doe)
-
-The backend should include the following routes:
-
-GET /authors => returns the list of authors
-GET /authors/123 => returns a single author
-POST /authors => create a new author
-PUT /authors/123 => edit the author with the given id
-DELETE /authors/123 => delete the author with the given id
-
-The persistence must be granted via file system (es.: Json file with a list of authors inside)
-
-Sidenote: remember to install the cors package with 'npm i cors', to import it with the require statement and to use it with 'server.use(cors())'
-
-Extra
-POST authors/checkEmail => check if another author has the same email. The parameter should be passed in the body. It should return true or false.
-
-It should not be possible to add a new author (with POST /authors) if another has the same email.
+BE: Comments edit and delete
+FE: Post new comment on a blog post
