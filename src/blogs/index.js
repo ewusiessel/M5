@@ -3,7 +3,11 @@ import fs from "fs";
 import uniqid from "uniqid";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { checkBlogPostSchema, checkValidationResult } from "./validation.js";
+import {
+  checkBlogPostSchema,
+  checkSearchSchema,
+  checkValidationResult,
+} from "./validation.js";
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -12,6 +16,21 @@ const __dirname = dirname(__filename);
 const blogsFilePath = path.join(__dirname, "blogs.json");
 
 const router = express.Router();
+
+router.get("/search", checkSearchSchema, checkValidationResult, async (req, res, next) => {
+  try {
+    const { title } = req.query;
+    const fileAsBuffer = fs.readFileSync(blogsFilePath);
+    const fileAsString = fileAsBuffer.toString();
+    const array = JSON.parse(fileAsString);
+    const filtered = array.filter((blog) =>
+      blog.title.toLowerCase().includes(title.toLowerCase())
+    );
+    res.send(filtered);
+  } catch (error) {
+    res.sendStatus(500).send({ message: error.message });
+  }
+});
 
 //get all blogs
 router.get("/", async (req, res, next) => {

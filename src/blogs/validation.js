@@ -54,6 +54,16 @@ const schema = {
   },
 };
 
+const searchSchema = {
+  title: {
+    in: ["query"],
+    isString: {
+      errorMessage: "title must be in query and type must be a string to search!",
+    },
+  },
+};
+
+export const checkSearchSchema = checkSchema(searchSchema);
 export const checkBlogPostSchema = checkSchema(schema);
 
 export const checkValidationResult = (req, res, next) => {
@@ -66,5 +76,3 @@ export const checkValidationResult = (req, res, next) => {
   }
   next();
 };
-
-
