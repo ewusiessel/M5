@@ -1,6 +1,8 @@
 export const notFound = (err, req, res) => {
   if (err && err.status === 400) {
-    res.status(400).send({ message: err.message || "Not found!" });
+    res
+      .status(400)
+      .send({ message: err.message || "Not found!", errors: err.errors || [] });
   }
 
   next();
@@ -24,4 +26,3 @@ export const catchAllErrorHandler = (err, req, res) => {
   }
   next();
 };
-  
