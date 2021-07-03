@@ -4,36 +4,41 @@ const router = Router();
 
 //1. GET
 
-router.get("/", () => {
+router.get("/", (req, res, next) => {
   try {
+    res.send("GET ALL FILES");
   } catch (error) {}
 });
 
-//2. POST
+//2. CREATE
 
-router.post("/", () => {
+router.post("/", (req, res, next) => {
   try {
+    res.send("CREATE A FILE");
   } catch (error) {}
 });
 
 //3. GET SINGLE
 
-router.get("/:id", () => {
+router.get("/:id", (req, res, next) => {
   try {
+    res.send("GET SINGLE FILE");
   } catch (error) {}
 });
 
 //4. UPDATE
 
-router.put("/:id", () => {
+router.put("/:id", (req, res, next) => {
   try {
+    res.send("UPDATE SINGLE FILE");
   } catch (error) {}
 });
 
 //5. DELETE SINGLE
 
-router.get("/:id", () => {
+router.delete("/:id", (req, res, next) => {
   try {
+    res.send("DELETE SINGLE FILE");
   } catch (error) {}
 });
 
