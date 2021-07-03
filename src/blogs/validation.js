@@ -63,6 +63,20 @@ const searchSchema = {
   },
 };
 
+const commentSchema = {
+  text: {
+    isString: {
+      errorMessage: "Text field is required for a comment",
+    },
+  },
+  userName: {
+    isString: {
+      errorMessage: "User name is required for a comment",
+    },
+  },
+};
+
+export const checkCommentSchema = checkSchema(commentSchema);
 export const checkSearchSchema = checkSchema(searchSchema);
 export const checkBlogPostSchema = checkSchema(schema);
 
