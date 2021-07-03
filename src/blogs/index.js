@@ -100,6 +100,25 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/:id/comments", async (req, res, next) => {
+  try {
+    const fileAsBuffer = fs.readFileSync(blogsFilePath);
+    const fileAsString = fileAsBuffer.toString();
+    const fileAsJSONArray = JSON.parse(fileAsString);
+    const blog = fileAsJSONArray.find((blog) => blog.id === req.params.id);
+    if (!blog) {
+      res
+        .status(404)
+        .send({ message: `blog with ${req.params.id} is not found` });
+    }
+
+    blog.comments = blog.comments || [];
+    res.send(blog.comments);
+  } catch (error) {
+    res.send(500).send({ message: error.message });
+  }
+});
+
 // delete blog
 router.delete("/:id", async (req, res, next) => {
   try {
@@ -185,7 +204,7 @@ router.put(
       fs.writeFileSync(blogsFilePath, JSON.stringify(fileAsJSONArray));
       res.send(changedblog);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       res.send(500).send({ message: error.message });
     }
   }
