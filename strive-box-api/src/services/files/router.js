@@ -1,5 +1,6 @@
 import { Router } from "express";
 import createError from "http-errors";
+import "../../utils/file-utils.js";
 
 const router = Router();
 
@@ -7,7 +8,8 @@ const router = Router();
 
 router.get("/", (req, res, next) => {
   try {
-    res.send("GET ALL FILES");
+    let meta = import.meta.url;
+    res.send(meta);
   } catch (error) {}
 });
 
