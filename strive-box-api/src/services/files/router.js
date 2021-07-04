@@ -1,4 +1,5 @@
 import { Router } from "express";
+import createError from "http-errors";
 
 const router = Router();
 
@@ -38,8 +39,13 @@ router.put("/:id", (req, res, next) => {
 
 router.delete("/:id", (req, res, next) => {
   try {
-    res.send("DELETE SINGLE FILE");
-  } catch (error) {}
+  } catch (err) {
+    const error = createError(
+      err.status || 500,
+      err.message || "Can not delete file"
+    );
+    next(error);
+  }
 });
 
 export default router;
