@@ -1,23 +1,24 @@
 import { Router } from "express";
 import createError from "http-errors";
-import "../../utils/file-utils.js";
+import { readFile, writeFile } from "../../utils/file-utils.js";
 
 const router = Router();
 
 //1. GET
 
-router.get("/", (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    let meta = import.meta.url;
-    res.send(meta);
+    const files = await readFile("files.json");
+    res.send(files);
   } catch (error) {}
 });
 
 //2. CREATE
 
-router.post("/", (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
-    res.send("CREATE A FILE");
+    const files = await writeFile("files.json", req.body);
+    res.send(files);
   } catch (error) {}
 });
 

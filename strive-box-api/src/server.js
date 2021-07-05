@@ -10,6 +10,8 @@ const { PORT } = process.env;
 
 const server = express();
 
+server.use(express.json());
+
 server.use("/files", filesRouter);
 
 server.use(errorHandler)
