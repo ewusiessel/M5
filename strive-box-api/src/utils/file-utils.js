@@ -39,7 +39,21 @@ export const findById = async (id, name) => {
   if (foundObject) {
     return foundObject;
   } else {
-    const error = createError(404, "Thia object not found");
+    const error = createError(404, "Object1 not found");
+    throw error;
+  }
+};
+
+export const findByIdAndDelete = async (id, name) => {
+  let json = await readFile(name);
+  const filesJSONPath = getDataFilePath(name);
+  const foundObject = json.find((obj) => obj.id === id);
+  if (foundObject) {
+    json = json.filter((obj) => obj.id !== id);
+    await fs.writeJSON(filesJSONPath, json);
+    return foundObject;
+  } else {
+    const error = createError(404, "Object not found");
     throw error;
   }
 };

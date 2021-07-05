@@ -1,6 +1,12 @@
 import { Router } from "express";
 import createError from "http-errors";
-import { readFile, writeFile, findById } from "../../utils/file-utils.js";
+import fs from "fs-extra";
+import {
+  readFile,
+  writeFile,
+  findById,
+  findByIdAndDelete,
+} from "../../utils/file-utils.js";
 
 const router = Router();
 
@@ -47,8 +53,10 @@ router.put("/:id", (req, res, next) => {
 
 //5. DELETE SINGLE
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", async (req, res, next) => {
   try {
+    const deletedObject = await findByIdAndDelete(req.params.id, "files.json");
+    res.status(200).send(deletedObject);
   } catch (err) {
     const error = createError(
       err.status || 500,
