@@ -6,6 +6,7 @@ import {
   writeFile,
   findById,
   findByIdAndDelete,
+  findByIdAndUpdate,
 } from "../../utils/file-utils.js";
 
 const router = Router();
@@ -45,10 +46,21 @@ router.get("/:id", async (req, res, next) => {
 
 //4. UPDATE
 
-router.put("/:id", (req, res, next) => {
+router.put("/:id", async (req, res, next) => {
   try {
-    res.send("UPDATE SINGLE FILE");
-  } catch (error) {}
+    const updated = await findByIdAndUpdate(
+      req.params.id,
+      "files.json",
+      req.body
+    );
+    res.send(updated);
+  } catch (err) {
+    const error = createError(
+      err.status || 500,
+      err.message || "Can not delete file"
+    );
+    next(error);
+  }
 });
 
 //5. DELETE SINGLE

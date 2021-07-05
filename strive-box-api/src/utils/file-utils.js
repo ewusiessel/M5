@@ -57,3 +57,19 @@ export const findByIdAndDelete = async (id, name) => {
     throw error;
   }
 };
+
+export const findByIdAndUpdate = async (id, name, content) => {
+  let json = await readFile(name);
+  const filesJSONPath = getDataFilePath(name);
+  const foundIndex = json.findIndex((obj) => obj.id === id);
+  if (foundIndex !== -1) {
+    let foundObject = json[foundIndex];
+    foundObject = { ...foundObject, ...content, id, updatedAt: new Date() };
+    json[foundIndex] = foundObject;
+    await fs.writeJSON(filesJSONPath, json);
+    return foundObject;
+  } else {
+    const error = createError(404, "Object not found");
+    throw error;
+  }
+};
