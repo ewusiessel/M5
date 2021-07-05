@@ -1,6 +1,6 @@
 import { Router } from "express";
 import createError from "http-errors";
-import { readFile, writeFile } from "../../utils/file-utils.js";
+import { readFile, writeFile, findById } from "../../utils/file-utils.js";
 
 const router = Router();
 
@@ -24,10 +24,17 @@ router.post("/", async (req, res, next) => {
 
 //3. GET SINGLE
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
   try {
-    res.send("GET SINGLE FILE");
-  } catch (error) {}
+    const file = await findById(req.params.id, "files.json");
+    res.send(file);
+  } catch (err) {
+    const error = createError(
+      err.status || 500,
+      err.message || "Can not delete file"
+    );
+    next(error);
+  }
 });
 
 //4. UPDATE

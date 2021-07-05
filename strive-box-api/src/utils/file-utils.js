@@ -2,6 +2,8 @@ import fs from "fs-extra";
 
 import { v4 as uuidv4 } from "uuid";
 
+import createError from "http-errors";
+
 import { fileURLToPath } from "url";
 
 import { dirname, join } from "path";
@@ -29,4 +31,15 @@ export const writeFile = async (name, content) => {
   });
   await fs.writeJSON(filesJSONPath, json);
   return json;
+};
+
+export const findById = async (id, name) => {
+  const json = await readFile(name);
+  const foundObject = json.find((obj) => obj.id === id);
+  if (foundObject) {
+    return foundObject;
+  } else {
+    const error = createError(404, "Thia object not found");
+    throw error;
+  }
 };
