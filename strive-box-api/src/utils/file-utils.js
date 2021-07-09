@@ -14,6 +14,8 @@ const __dirname = dirname(__filename);
 
 export const getDataFilePath = (name) => join(__dirname, "../data", name);
 
+export const publicPath = join(__dirname, "../../public");
+
 export const readFile = async (name) => {
   const filesJSONPath = getDataFilePath(name);
   const json = await fs.readJSON(filesJSONPath);
