@@ -1,15 +1,21 @@
 import { Router } from "express";
 import createError from "http-errors";
 import fs from "fs-extra";
+
 import {
   readFile,
   writeFile,
   findById,
   findByIdAndDelete,
   findByIdAndUpdate,
+  getDataFilePath,
 } from "../../utils/file-utils.js";
 
+import multer from "multer";
+
 const router = Router();
+
+const upload = multer();
 
 //1. GET
 
@@ -22,11 +28,20 @@ router.get("/", async (req, res, next) => {
 
 //2. CREATE
 
-router.post("/", async (req, res, next) => {
+router.post("/", upload.single("cover"), async (req, res, next) => {
   try {
-    const files = await writeFile("files.json", req.body);
-    res.send(files);
-  } catch (error) {}
+    // const files = await writeFile("files.json", req.body);
+    const { originalname, buffer } = req.file;
+    const filePath = getDataFilePath(originalname);
+    await fs.writeFile(filePath, buffer);
+    res.send("OK");
+  } catch (err) {
+    const error = createError(
+      err.status || 500,
+      err.message || "Can not delete file"
+    );
+    next(error);
+  }
 });
 
 //3. GET SINGLE
